@@ -5,8 +5,9 @@ from . import views
 # http://127.0.0.1:8000/kurslar   => kurs listesi
 
 urlpatterns = [
-    path('',views.kurslar),
+    path('',views.index),
     path('list',views.kurslar),
-    path('details',views.details),
-    path('<category>',views.getCoursesByCategory)
+    path('<kurs_adi>',views.details),
+    path('kategori/<int:category_id>',views.getCoursesByCategoryId),
+    path('kategori/<str:category_name>',views.getCoursesByCategory,name='courses_by_category'),
 ]
