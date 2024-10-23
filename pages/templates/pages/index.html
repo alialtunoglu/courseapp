@@ -10,8 +10,20 @@
 
 
 {% block content %}
-    <h1>Anasayfa</h1>
-    <i class="fa-solid fa-cube"></i>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-3">
+            <!--menu-->
+           {% include "courses/partials/_categories.html" %}
+        </div>
+        <div class="col-9">
+            <!--content-->
+            <h1>Anasayfa</h1>
+            <i class="fa-solid fa-cube"></i>
+        </div>
+
+    </div>
+</div>
 {% endblock content %}
 
 {% block js_files %}{% endblock js_files %}

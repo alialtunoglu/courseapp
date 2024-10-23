@@ -6,5 +6,19 @@
 
 
 {% block content %}
-    <h1>Kurslar</h1>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-3">
+            {% include 'courses/partials/_categories.html' %}
+        </div>
+        <div class="col-9"> 
+            {% for course in courses  %}
+                
+                    {% include "courses/partials/_course.html" %}
+                
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
 {% endblock content %}
