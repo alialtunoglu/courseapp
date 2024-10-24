@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date,datetime
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
@@ -14,16 +14,16 @@ db = {
           {
                "title":"javascript kursu",
                "description":"javascript kurs açıklaması",
-               "imageUrl":"https://img-c.udemycdn.com/course/750x422/1662526_fc1c_3.jpg",
+               "imageUrl":"1.jpg",
                "slug":"javascript-kursu",
-               "date":date(2022,10,10),
+               "date":datetime.now(),
                "isActive":True,
                "isUpdated":False
           },
           {
                "title":"python kursu",
                "description":"python kurs açıklaması",
-               "imageUrl":"https://img-c.udemycdn.com/course/750x422/2463492_8344_3.jpg",
+               "imageUrl":"2.jpg",
                "slug":"python-kursu",
                "date":date(2022,9,10),
                 "isActive":False,
@@ -32,7 +32,7 @@ db = {
           {
                "title":"web geliştirme kursu",
                "description":"web geliştirme kurs açıklaması",
-               "imageUrl":"https://img-c.udemycdn.com/course/750x422/1258436_2dc3_4.jpg",
+               "imageUrl":"3.jpg",
                "slug":"web-gelistirme-kursu",
                "date":date(2022,8,10),
                "isActive":True,

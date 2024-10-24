@@ -1,7 +1,13 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} # extendlerin en yukarıda olması gerekir.
+{% load static %} # static keywordunu nerde kullanıyorsak sayfanın en başında bu olacak
+
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'courses/css/style.css' %}">
+{% endblock css_files %}
 
 {% block page_title %}
-    Kurslar Sayfası
+    Kurslar
 {% endblock page_title %}
 
 
@@ -18,7 +24,12 @@
                 
             {% endfor %}
         </div>
-
+        
     </div>
 </div>
 {% endblock content %}
+
+
+{% block js_files %}
+    <script src="{% static 'courses/js/script.js' %}"></script>
+{% endblock js_files %}
