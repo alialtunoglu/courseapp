@@ -1,8 +1,8 @@
 from datetime import date,datetime
-from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-
+from .models import Course,Category
 
 data = {
      "programlama":"programlama kategorisine ait kurslar",
@@ -50,16 +50,25 @@ db = {
 
 # http://127.0.0.1:8000/kurslar
 def index(request):
-    kurslar = [course for course in db['courses'] if course['isActive']]
-    kategoriler = db['categories']
+    kurslar = Course.objects.filter(isActive=1)
+    kategoriler = Category.objects.all()
 
     return render(request,'courses/index.html', {
          'categories':kategoriler,
          'courses':kurslar,
     })  
 
-def details(request,kurs_adi):  
-        return HttpResponse(f'{kurs_adi} detay sayfası')
+def details(request,slug): 
+     #    try:
+     #      course = Course.objects.get(pk=kurs_id) 
+     #    except:
+     #        raise Http404()
+
+     course = get_object_or_404(Course,slug=slug)     
+     context = {
+          'course':course
+     }
+     return render(request,'courses/details.html',context)
 
 def getCoursesByCategory(request,category_name):
     try:
