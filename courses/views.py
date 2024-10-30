@@ -1,61 +1,23 @@
 from datetime import date,datetime
-from django.shortcuts import get_object_or_404, redirect, render
-from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, render
 from .models import Course,Category
+from django.core.paginator import Paginator
 
-data = {
-     "programlama":"programlama kategorisine ait kurslar",
-     "web-gelistirme":"web geliştirme kategorisine ait kurslar",
-     "mobil-uygulamalar":"mobil kategorisine ait kurslar",
-}
-db = {
-     "courses":[
-          {
-               "title":"javascript kursu",
-               "description":"javascript kurs açıklaması",
-               "imageUrl":"1.jpg",
-               "slug":"javascript-kursu",
-               "date":datetime.now(),
-               "isActive":True,
-               "isUpdated":False
-          },
-          {
-               "title":"python kursu",
-               "description":"python kurs açıklaması",
-               "imageUrl":"2.jpg",
-               "slug":"python-kursu",
-               "date":date(2022,9,10),
-                "isActive":False,
-               "isUpdated":False
-          },
-          {
-               "title":"web geliştirme kursu",
-               "description":"web geliştirme kurs açıklaması",
-               "imageUrl":"3.jpg",
-               "slug":"web-gelistirme-kursu",
-               "date":date(2022,8,10),
-               "isActive":True,
-               "isUpdated":True
-          }
-     ],
-     "categories":[
-          {"id": 1, "name":"programlama","slug":"programlama"},
-          {"id": 2, "name":"web geliştirme","slug":"web-gelistirme"},
-          {"id": 3, "name":"mobil uygulamalar","slug":"mobil-uygulamalar"},
-    
-          ]
-}
-
-
+ 
 # http://127.0.0.1:8000/kurslar
 def index(request):
     kurslar = Course.objects.filter(isActive=1)
     kategoriler = Category.objects.all()
 
+    
+    paginator = Paginator(kurslar, 3)
+    page = request.GET.get('page',1)
+    page_obj= paginator.page(page)
+
+
     return render(request,'courses/index.html', {
          'categories':kategoriler,
-         'courses':kurslar,
+         'page_obj':page_obj,
     })  
 
 def details(request,slug): 
@@ -70,20 +32,20 @@ def details(request,slug):
      }
      return render(request,'courses/details.html',context)
 
-def getCoursesByCategory(request,category_name):
-    try:
-        category_text=data[category_name]
-        return render(request,'courses/kurslar.html',{
-             'category':category_name,
-             'category_text':category_text,
-        })
-    except:
-        return HttpResponseNotFound("<h1>yanlış kategori seçimi</h1>")     
+def getCoursesByCategory(request,slug):
+    kurslar = Course.objects.filter(categories__slug=slug,isActive=1).order_by("date")
+    kategoriler = Category.objects.all()
+    
+    paginator = Paginator(kurslar, 3)
+    page = request.GET.get('page',1)
+    page_obj= paginator.page(page)
 
-def getCoursesByCategoryId(request,category_id):
-    category_list =list(data.keys())
-    if(category_id>len(category_list)):
-        return HttpResponseNotFound("yanlış kategori seçimi")
-    category_name= category_list[category_id-1]
-    redirect_url=reverse('courses_by_category',args=[category_name])
-    return redirect(redirect_url) 
+    print(page_obj.paginator.count) 
+    print(page_obj.paginator.num_pages)
+    print(page_obj.object_list)
+    return render(request,'courses/index.html', {
+         'categories':kategoriler,
+         'page_obj':page_obj,
+         'seciliKategori':slug
+    })  
+    

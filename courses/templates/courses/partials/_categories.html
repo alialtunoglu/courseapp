@@ -1,6 +1,8 @@
 <div class="list-group">
-    {% for category in categories  %}
-    <a href="{% url "courses_by_category" category.slug %}" class="list-group-item list-group-item-action">
+    <a href="/kurslar" class="list-group-item list-group-item-action">Tüm Kategoriler</a>
+    {% for category in categories   %}
+    <a href="{% url "courses_by_category" category.slug %}" 
+    class="list-group-item list-group-item-action {% if category.slug == seciliKategori  %}active{% endif %}">
         {{category.name | title}}</a>
     {% endfor %}
 </div> 
