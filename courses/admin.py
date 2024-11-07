@@ -4,11 +4,11 @@ from .models import Course,Category
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title","isActive","slug","category_list",)
+    list_display = ("title","isActive","isHome","slug","category_list",)
     list_display_links = ("title","slug")
     prepopulated_fields = {"slug": ("title",)} #slug alanının title'a göre otomatik olarak oluşturulması
-    list_filter = ("title","isActive",)
-    list_editable = ("isActive",) #editable alanlar
+    list_filter = ("title","isActive","isHome")
+    list_editable = ("isActive","isHome",) #editable alanlar
     search_fields = ("title","description") #search alanları
     def category_list(self,obj):
         html =""

@@ -15,6 +15,7 @@ class Course(models.Model):
     imageUrl = models.CharField(max_length=50)
     date = models.DateField(auto_now=True)
     isActive = models.BooleanField()
+    isHome = models.BooleanField(default=False)
     slug = models.SlugField(default="",blank=True,null=False,unique=True,db_index=True) #php-kursu
     #category = models.ForeignKey(Category,default=1, on_delete=models.CASCADE,related_name="kurslar")  #php-kursu
     #editable = admin panelinde bu alan formda görünmesin
