@@ -1,4 +1,5 @@
-from django.forms import ModelForm, TextInput, Textarea
+from django import forms
+from django.forms import ModelForm, SelectMultiple, TextInput, Textarea
 from courses.models import Course
 
 
@@ -20,7 +21,7 @@ class CourseCreateForm(forms.Form):
 class CourseCreateForm(ModelForm):
     class Meta:
         model = Course
-        fields=["title", "description","imageUrl","slug" ,]  
+        fields=["title", "description","image","slug" ,]  
         labels={
             'title':"Kurs Başlığı",
             'description':'Kurs Açıklaması'
@@ -29,7 +30,6 @@ class CourseCreateForm(ModelForm):
         widgets={
             "title":TextInput(attrs={"class":"form-control"}),
             "description": Textarea(attrs={"class":"form-control"}),
-            "imageUrl": TextInput(attrs={"class":"form-control"}),
             "slug": TextInput(attrs={"class":"form-control"})
         }
         
@@ -43,4 +43,32 @@ class CourseCreateForm(ModelForm):
 
             }
         }
-    
+
+class CourseEditForm(ModelForm):
+    class Meta:
+        model = Course
+        fields=["title", "description","image","slug" ,"categories","isActive"]  
+        labels={
+            'title':"Kurs Başlığı",
+            'description':'Kurs Açıklaması'
+        }
+
+        widgets={
+            "title":TextInput(attrs={"class":"form-control"}),
+            "description": Textarea(attrs={"class":"form-control"}),
+            "slug": TextInput(attrs={"class":"form-control"}),
+            "categories": SelectMultiple(attrs={"class":"form-control"}),
+        }
+        
+        error_messages={
+            'title': {
+                "required":"Kurs Başlığı girmelisiniz",
+                "max_length" : "Maksimum 50 Karakter Girmelisiniz"
+            },
+            'description': {
+                "required":"Kurs açıklaması girmelisiniz",
+
+            }
+        }
+class UploadForm(forms.Form):
+    image = forms.ImageField()
