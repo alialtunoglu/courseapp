@@ -6,7 +6,7 @@ from .models import Course,Category, UploadModel
 from django.core.paginator import Paginator
 import random
 import os 
-
+from django.contrib.auth.decorators import login_required,user_passes_test
 # http://127.0.0.1:8000/kurslar
 def index(request):
     kurslar = Course.objects.filter(isActive=1,isHome=1)
@@ -16,6 +16,29 @@ def index(request):
          'categories':kategoriler,
          'courses':kurslar,
     })
+def isAdmin(user):
+    return user.is_superuser
+@user_passes_test(isAdmin)
+def create_course(request):
+        
+        if request.method == "POST":
+            form = CourseCreateForm(request.POST,request.FILES)
+
+            if form.is_valid():
+                form.save()
+                return redirect("/kurslar")
+            
+        else :
+            form = CourseCreateForm()
+        return render(request,'courses/create-course.html',{"form": form})
+@login_required()
+def course_list(request):
+    kurslar = Course.objects.all()
+    
+    return render(request,'courses/course-list.html',{
+        'courses':kurslar,
+    })
+
 def course_edit(request,id):
     course = get_object_or_404(Course,pk=id)
     if request.method =="POST":
@@ -33,12 +56,7 @@ def course_delete(request,id):
         return redirect("course_list")
     
     return render(request,'courses/course-delete.html',{"course":course})
-def course_list(request):
-    kurslar = Course.objects.all()
-    
-    return render(request,'courses/course-list.html',{
-        'courses':kurslar,
-    })
+
 
 def upload(request):
     if request.method == "POST":
@@ -65,17 +83,6 @@ def search(request):
          'courses':kurslar,
          
     })  
-def create_course(request):
-        if request.method == "POST":
-            form = CourseCreateForm(request.POST,request.FILES)
-
-            if form.is_valid():
-                form.save()
-                return redirect("/kurslar")
-            
-        else :
-            form = CourseCreateForm()
-        return render(request,'courses/create-course.html',{"form": form})
 
 
 def details(request,slug): 
