@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
+from django.contrib import messages
 
-# Create your views here.
 
 def user_login(request):
     if request.user.is_authenticated and  "next" in request.GET:
@@ -11,16 +11,20 @@ def user_login(request):
     if request.method == 'POST':
         username=request.POST['username']
         password=request.POST['password']
+
         user = authenticate(request,username=username, password=password)
+        
         if user is not None:
             login(request,user)
+            messages.add_message(request,messages.SUCCESS,"Giriş Başarılı")
             nextUrl= request.GET.get("next",None)
             if nextUrl is None:
                 return redirect('index')
             else:
                 return redirect(nextUrl)
         else:
-            return render(request, 'account/login.html', {'error': 'Parola veya username yanlış!'})
+            messages.add_message(request,messages.ERROR,"Parola veya username yanlış!")
+            return render(request, 'account/login.html')
     else:
         return render(request, 'account/login.html')
         
@@ -50,5 +54,6 @@ def user_register(request):
 
     
 def user_logout(request):
+    messages.add_message(request,messages.SUCCESS,"Çıkış Başarılı")
     logout(request)
     return redirect('user_login')
