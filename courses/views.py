@@ -2,7 +2,7 @@ from datetime import date,datetime
 from django.shortcuts import get_object_or_404, redirect, render
 
 from courses.forms import CourseCreateForm, CourseEditForm, UploadForm
-from .models import Course,Category, UploadModel
+from .models import Course,Category, Slider, UploadModel
 from django.core.paginator import Paginator
 import random
 import os 
@@ -11,10 +11,11 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 def index(request):
     kurslar = Course.objects.filter(isActive=1,isHome=1)
     kategoriler = Category.objects.all()
-
+    sliders = Slider.objects.filter(is_active=True)
     return render(request,'courses/index.html', {
          'categories':kategoriler,
          'courses':kurslar,
+         'sliders':sliders
     })
 def isAdmin(user):
     return user.is_superuser

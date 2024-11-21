@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course,Category
+from .models import Course,Category, Slider
 
 
 @admin.register(Course)
@@ -30,4 +30,4 @@ class CategoryAdmin(admin.ModelAdmin):
 # admin.site.register(Course,CourseAdmin) #Course modelini admin paneline ekledik.
 # admin.site.register(Category) #Category modelini admin paneline ekledik.
 
-
+admin.site.register(Slider)
