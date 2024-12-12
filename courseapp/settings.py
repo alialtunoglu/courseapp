@@ -88,15 +88,16 @@ WSGI_APPLICATION = "courseapp.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'courseapp_db_postgresql',
-        'USER': 'courseapp_db_postgresql_user',
-        'PASSWORD': '1PJMZXTBiVCA42w7EZKsG1AliShPq65A',
-        'HOST': 'dpg-ctdcvjggph6c73erhoig-a',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME", "courseapp_db_postgresql"),
+        "USER": os.getenv("DB_USER", "courseapp_db_postgresql_user"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "1PJMZXTBiVCA42w7EZKsG1AliShPq65A"),
+        "HOST": os.getenv("DB_HOST", "dpg-ctdcvjggph6c73erhoig-a"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
+
 
 
 # Password validation
