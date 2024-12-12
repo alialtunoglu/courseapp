@@ -7,6 +7,10 @@ from django.contrib.auth import update_session_auth_hash
 def user_login(request):
     if request.user.is_authenticated and  "next" in request.GET:
         return render(request, 'account/login.html', {'error': 'Yetkisiz kullanıcı erişimi'})
+        # Kullanıcı giriş yapmışsa login sayfasına gitmesini engelle
+    if request.user.is_authenticated:
+        return redirect('index')  # Veya yönlendirmek istediğiniz başka bir sayfa
+
 
     if request.method == 'POST':
         form = LoginUserForm(request,data=request.POST)
@@ -35,6 +39,9 @@ def user_login(request):
         return render(request, 'account/login.html',{"form":form})
         
 def user_register(request):
+    if request.user.is_authenticated:
+        return redirect('index')  # Veya yönlendirmek istediğiniz başka bir sayfa
+    
     if request.method == 'POST':
         form = NewUserForm(request.POST)
         if form.is_valid():

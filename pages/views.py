@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return redirect('index')
+    return redirect('user_login')
 def about(request):
     return render(request,'pages/about.html')
 def contact(request):

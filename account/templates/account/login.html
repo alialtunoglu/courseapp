@@ -19,9 +19,11 @@
                 {% csrf_token %}
                 {% include 'partials/_form.html' %}
                 
-                
                 <button type="submit"  class="btn btn-primary">Login</button>
             </form>
+            <div class="mt-3">
+                <p>If you don't have an account, <a href="{% url 'user_register' %}">sign up here</a>.</p>
+            </div>
         </div>       
     </div>
 </div>
